@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('holidays', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('calendar_id');
+            $table->foreignId('user_id');
+            $table->date('day');
+            $table->enum('type',['decline','aproved','pending'])->default('pending');
             $table->timestamps();
         });
     }

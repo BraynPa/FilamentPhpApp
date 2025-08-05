@@ -6,5 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Timesheet extends Model
 {
-    //
+    public function user()
+    {
+        return $this->belongsTo(User::Class);
+    }
+    public function calendar()
+    {
+        return $this->belongsTo(Calendar::Class);
+    }
 }
