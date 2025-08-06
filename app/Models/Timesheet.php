@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Timesheet extends Model
 {
+    protected $guarded = [];
     public function user()
     {
         return $this->belongsTo(User::Class);
