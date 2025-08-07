@@ -17,7 +17,7 @@ class CalendarResource extends Resource
 {
     protected static ?string $model = Calendar::class;
     protected static ?string $navigationGroup = 'System Management';
-    protected static ?int $navigationSort = 3;
+    protected static ?int $navigationSort = 4;
 
     protected static ?string $navigationIcon = 'heroicon-s-calendar';
 
