@@ -53,6 +53,9 @@ class PersonalPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
+            ])
+            ->colors([
+                'primary' => '#8A0B5E'
             ]);
     }
 }
