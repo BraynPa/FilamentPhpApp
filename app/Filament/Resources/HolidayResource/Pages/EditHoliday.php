@@ -7,6 +7,7 @@ use App\Mail\HolidayApproved;
 use App\Mail\HolidayDecline;
 use App\Models\User;
 use Filament\Actions;
+use Filament\Notifications\Notification;
 use Filament\Resources\Pages\EditRecord;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Mail;
@@ -34,6 +35,13 @@ class EditHoliday extends EditRecord
                 'day' => $record->day,
             );
             Mail::to($user)->send(new HolidayApproved($data));
+            $recipient = $user;
+            $recipient->notify(Notification::make()
+                ->title('Solicitud de vacaciones')
+                ->body('El día ' . $data['day'] . ' está aprovado.')
+                ->success()
+                ->toDatabase(),
+            );
         }else{
             $user = User::find($record->user_id);
             $data = array(
@@ -42,6 +50,13 @@ class EditHoliday extends EditRecord
                 'day' => $record->day,
             );
             Mail::to($user)->send(new HolidayDecline($data));
+            $recipient = $user;
+            $recipient->notify(Notification::make()
+                ->title('Solicitud de vacaciones')
+                ->body('El día ' . $data['day'] . ' está denegada.')
+                ->danger()
+                ->toDatabase(),
+            );
         }
         return $record;
     }

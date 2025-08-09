@@ -53,7 +53,8 @@ class PersonalPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-            ])
+                ])
+            ->databaseNotifications()
             ->colors([
                 'primary' => '#8A0B5E'
             ]);
