@@ -52,6 +52,9 @@ class DashboardPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
+            ])
+            ->colors([
+                'primary' => '#4EB015'
             ]);
     }
 }
