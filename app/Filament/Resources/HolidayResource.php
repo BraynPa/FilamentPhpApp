@@ -15,7 +15,6 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Tables\Filters\SelectFilter;
-
 class HolidayResource extends Resource
 {
     protected static ?string $model = Holiday::class;
@@ -23,7 +22,6 @@ class HolidayResource extends Resource
     protected static ?string $navigationIcon = 'fas-paper-plane';
     protected static ?string $navigationGroup = 'Employee Management';
     protected static ?int $navigationSort = 2;
-
     public static function form(Form $form): Form
     {
         return $form
