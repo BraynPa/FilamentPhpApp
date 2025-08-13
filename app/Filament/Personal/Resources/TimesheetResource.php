@@ -19,7 +19,9 @@ use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Actions\ViewAction;
 use Illuminate\Support\Facades\Auth;
-
+use pxlrbt\FilamentExcel\Actions\Tables\ExportAction;
+use pxlrbt\FilamentExcel\Exports\ExcelExport;
+use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 class TimesheetResource extends Resource
 {
     protected static ?string $model = Timesheet::class;
@@ -92,6 +94,13 @@ class TimesheetResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                    ExportBulkAction::make()->exports([
+                        ExcelExport::make('table')->fromTable()
+                            ->withFilename('Timesheet'.date('Y-m-d').'_export'),
+                        ExcelExport::make('form')->fromForm()
+                            ->askForFilename()
+                            ->askForWriterType(),
+                    ])
                 ]),
             ]);
     }

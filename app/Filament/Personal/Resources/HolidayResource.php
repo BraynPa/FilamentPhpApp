@@ -18,7 +18,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class HolidayResource extends Resource
 {
     protected static ?string $model = Holiday::class;
-
+    protected static ?string $navigationBadgeTooltip = 'The number of pending holidays';
     protected static ?string $navigationIcon = 'fas-paper-plane';
 
     public static function form(Form $form): Form
@@ -100,5 +100,9 @@ class HolidayResource extends Resource
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()->where('user_id', Auth::user()->id);
+    }
+    public static function getNavigationBadge(): ?string
+    {
+        return parent::getEloquentQuery()->where('user_id', Auth::user()->id)->where('type','pending')->count();
     }
 }

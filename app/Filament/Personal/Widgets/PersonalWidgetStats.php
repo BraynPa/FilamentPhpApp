@@ -10,10 +10,12 @@ use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 use Illuminate\Support\Carbon;
 use PhpParser\Node\Stmt\Foreach_;
+use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 
 class PersonalWidgetStats extends BaseWidget
 {
-    
+
+    use HasWidgetShield;
     protected function getStats(): array
     {
         return [
