@@ -18,7 +18,7 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
-
+use pxlrbt\FilamentSpotlight\SpotlightPlugin;
 class PersonalPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
@@ -54,6 +54,7 @@ class PersonalPanelProvider extends PanelProvider
             ])
             ->plugins([
                 FilamentShieldPlugin::make(),
+                SpotlightPlugin::make(),
             ])
             ->authMiddleware([
                 Authenticate::class,
