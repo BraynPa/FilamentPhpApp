@@ -5,6 +5,7 @@ namespace App\Filament\Personal\Resources\TimesheetResource\Pages;
 use App\Filament\Personal\Resources\TimesheetResource;
 use App\Imports\MyTimesheetImport;
 use App\Models\Timesheet;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use EightyNine\ExcelImport\ExcelImportAction;
 use Filament\Actions;
@@ -125,8 +126,30 @@ class ListTimesheets extends ListRecords
                         ->send();
                 }),
             ExcelImportAction::make()
+                ->iconButton()
+                ->tooltip('Importar Timesheets Excel')
+                ->icon('fas-file-import')
                 ->color("primary")
                 ->use(MyTimesheetImport::class),
+            Action::make('download_pdf')
+                ->iconButton()
+                ->tooltip('Descargar PDF')
+                ->icon('fas-file-pdf')
+                ->requiresConfirmation()
+                ->modalIcon('fas-file-pdf')
+                ->modalHeading('Download pdf')
+                ->modalDescription('Are you sure you\'d like to download this?')
+                ->action(function () {
+                    $data = [
+                        'timesheets' => Timesheet::where('user_id',auth()->user()->id)->get(),
+                    ];
+
+                    $pdf = Pdf::loadView('pdf.timesheet.invoice', $data);
+
+                    return response()->streamDownload(function () use ($pdf) {
+                        echo $pdf->output();
+                    }, 'timesheets.pdf');
+            }),
         ];
     }
 }

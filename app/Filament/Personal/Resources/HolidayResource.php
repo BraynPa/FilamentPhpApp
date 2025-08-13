@@ -47,7 +47,7 @@ class HolidayResource extends Resource
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
                         'pending' => 'gray',
-                        'aproved' => 'success',
+                        'aproved' => 'primary',
                         'decline' => 'danger',
                     }),
                 Tables\Columns\TextColumn::make('created_at')

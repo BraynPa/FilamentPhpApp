@@ -22,6 +22,9 @@ use Illuminate\Support\Facades\Auth;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportAction;
 use pxlrbt\FilamentExcel\Exports\ExcelExport;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Filament\Tables\Actions\BulkAction;
+use Illuminate\Database\Eloquent\Collection;
 class TimesheetResource extends Resource
 {
     protected static ?string $model = Timesheet::class;
@@ -94,13 +97,32 @@ class TimesheetResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
-                    ExportBulkAction::make()->exports([
-                        ExcelExport::make('table')->fromTable()
-                            ->withFilename('Timesheet'.date('Y-m-d').'_export'),
-                        ExcelExport::make('form')->fromForm()
-                            ->askForFilename()
-                            ->askForWriterType(),
-                    ])
+                    ExportBulkAction::make()
+                        ->label('Exportar Excel')
+                        ->exports([
+                            ExcelExport::make('table')->fromTable()
+                                ->withFilename('Timesheet'.date('Y-m-d').'_export'),
+                            ExcelExport::make('form')->fromForm()
+                                ->askForFilename()
+                                ->askForWriterType(),
+                                
+                        ])
+                        ->icon('bytesize-export'),
+                    BulkAction::make('download_pdf')
+                        ->label('Descargar PDF')
+                        ->action(function (Collection $records) {
+                            $data = [
+                                'timesheets' => $records,
+                            ];
+
+                            $pdf = Pdf::loadView('pdf.timesheet.invoice', $data);
+
+                            return response()->streamDownload(function () use ($pdf) {
+                                echo $pdf->output();
+                            }, 'timesheets.pdf');
+                        })
+                        ->icon('heroicon-o-arrow-down-tray')
+                        ->deselectRecordsAfterCompletion(),
                 ]),
             ]);
     }
